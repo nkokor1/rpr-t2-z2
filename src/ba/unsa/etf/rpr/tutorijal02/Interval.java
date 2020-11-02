@@ -19,10 +19,30 @@ public class Interval {
         krajnjaPripadaIntervalu = false;
     }
     public boolean isNull(){
+        if(pocetnaTacka==krajnjaTacka) {
+            return true;
+        }
         return false;
     }
     public boolean isIn(double tacka){
-        return false;
+        if(pocetnaPripadaIntervalu && krajnjaPripadaIntervalu) {
+            if(tacka>=pocetnaTacka && tacka<=krajnjaTacka) {
+                return true;
+            } return false;
+        }
+        if(pocetnaPripadaIntervalu && !krajnjaPripadaIntervalu) {
+            if(tacka>=pocetnaTacka && tacka<krajnjaTacka) {
+                return true;
+            }
+            return false;
+        }
+        if(!pocetnaPripadaIntervalu && krajnjaPripadaIntervalu) {
+            if(tacka>pocetnaTacka && tacka<=krajnjaTacka) {
+                return true;
+            }
+            return false;
+        }
+            return false;
     }
     public static Interval intersect(Interval prviInterval, Interval drugiInterval){
         Interval presjek = new Interval();
