@@ -11,6 +11,8 @@ public class Interval {
         }
         this.pocetnaTacka = pocetnaTacka;
         this.krajnjaTacka = krajnjaTacka;
+        this.pocetnaPripadaIntervalu=pocetnaPripadaIntervalu;
+        this.krajnjaPripadaIntervalu=krajnjaPripadaIntervalu;
     }
     public Interval() {
         pocetnaTacka = 0;
@@ -19,7 +21,7 @@ public class Interval {
         krajnjaPripadaIntervalu = false;
     }
     public boolean isNull(){
-        if(pocetnaTacka==krajnjaTacka) {
+        if(pocetnaTacka==krajnjaTacka && !pocetnaPripadaIntervalu && !krajnjaPripadaIntervalu) {
             return true;
         }
         return false;
@@ -48,6 +50,9 @@ public class Interval {
         return intersect(this,drugi);
     }
     public static Interval intersect(Interval prvi, Interval drugi) {
+        if(prvi.pocetnaTacka<drugi.pocetnaTacka && prvi.krajnjaTacka> drugi.krajnjaTacka){
+            return drugi;
+        }
            //ako nema presjeka
            if((drugi.isIn(prvi.pocetnaTacka)==false && drugi.isIn(prvi.krajnjaTacka)==false) || (prvi.isIn(drugi.pocetnaTacka)==false && prvi.isIn(drugi.krajnjaTacka)==false)) {
                Interval presjek = new Interval();
@@ -60,8 +65,7 @@ public class Interval {
            else if(prvi.pocetnaTacka >= drugi.pocetnaTacka && prvi.krajnjaTacka <= drugi.krajnjaTacka){
                //ako se rubovi ne dodiruju
                if(prvi.pocetnaTacka > drugi.pocetnaTacka && prvi.krajnjaTacka < drugi.krajnjaTacka){
-                   Interval presjek = new Interval (prvi.pocetnaTacka, prvi.krajnjaTacka, prvi.pocetnaPripadaIntervalu, prvi.krajnjaPripadaIntervalu);
-                   return presjek;
+                  return prvi;
                }
                //ako se i pocetni i krajnji rub dodiruju
                if(prvi.pocetnaTacka == drugi.pocetnaTacka && prvi.krajnjaTacka == drugi.krajnjaTacka){
@@ -101,11 +105,10 @@ public class Interval {
                }
            }
            //ako je drugi u prvom
-           else if(prvi.pocetnaTacka <= drugi.pocetnaTacka && prvi.krajnjaTacka >= drugi.krajnjaTacka) {
+           else if(prvi.pocetnaTacka < drugi.pocetnaTacka && prvi.krajnjaTacka > drugi.krajnjaTacka) {
                //ako se rubovi ne dodiruju
                if (prvi.pocetnaTacka < drugi.pocetnaTacka && prvi.krajnjaTacka > drugi.krajnjaTacka) {
-                   Interval presjek = new Interval(drugi.pocetnaTacka, drugi.krajnjaTacka, drugi.pocetnaPripadaIntervalu, drugi.krajnjaPripadaIntervalu);
-                   return presjek;
+                  return drugi;
                }
                //slucaj kad se i pocetni i krajni rub dodiruju je obradjen u sekciji "ako je prvi u drugom"
                //ako se pocetni rubovi dodiruju
@@ -168,17 +171,17 @@ public class Interval {
            Interval presjek = new Interval(); return presjek;
     }
     public boolean equals(Interval interval){
-               if (this.pocetnaPripadaIntervalu == interval.pocetnaPripadaIntervalu && this.krajnjaPripadaIntervalu == interval.krajnjaPripadaIntervalu && this.pocetnaTacka == interval.pocetnaTacka && this.krajnjaTacka == interval.krajnjaTacka) {
-                   return true;
+               return (this.pocetnaTacka==interval.pocetnaTacka && this.krajnjaTacka== interval.krajnjaTacka && this.pocetnaPripadaIntervalu==interval.pocetnaPripadaIntervalu && this.krajnjaPripadaIntervalu==interval.krajnjaPripadaIntervalu);
                }
-               return false;
-           }
+               public static boolean equals(Interval prvi, Interval drugi){
+                   return (prvi.pocetnaTacka==drugi.pocetnaTacka && prvi.krajnjaTacka== drugi.krajnjaTacka && prvi.pocetnaPripadaIntervalu==drugi.pocetnaPripadaIntervalu && prvi.krajnjaPripadaIntervalu==drugi.krajnjaPripadaIntervalu);
+               }
     public String toString() {
         if (isNull()) {
             return "()";
         } else {
-            if (pocetnaPripadaIntervalu == false) {
-                String ispis = "(" + pocetnaTacka + "," + krajnjaTacka;
+            if (pocetnaPripadaIntervalu) {
+                String ispis = "[" + pocetnaTacka + "," + krajnjaTacka;
                 if (krajnjaPripadaIntervalu) {
                     ispis = ispis + "]";
                 } else {
@@ -186,7 +189,7 @@ public class Interval {
                 }
                 return ispis;
             } else {
-                String ispis = "[" + pocetnaTacka + "," + krajnjaTacka;
+                String ispis = "(" + pocetnaTacka + "," + krajnjaTacka;
                 if (krajnjaPripadaIntervalu) {
                     ispis = ispis + "]";
                 } else {
