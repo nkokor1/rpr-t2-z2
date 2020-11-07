@@ -44,22 +44,45 @@ public class Interval {
         }
             return false;
     }
-    public static Interval intersect(Interval prviInterval, Interval drugiInterval){
-        Interval presjek = new Interval();
-        return presjek;
+   /* public Interval intersect(Interval interval) {
+        //ako nema presjeka
+        if(this.krajnjaTacka<interval.krajnjaTacka) {
+            Interval presjek = new Interval();
+        }
+        if(this.equals(interval)){
+            return this;
+        }
+    }*/
+    public static Interval intersect(Interval prviInterval, Interval drugiInterval) {
+        return (prviInterval.intersect(drugiInterval));
     }
-    public Interval intersect(Interval drugiInterval){
-        Interval presjek = new Interval();
-        return presjek;
-    }
-    @Override
     public boolean equals(Interval interval){
         boolean jednakePocetneTacke = false;
         boolean jednakeKrajnjeTacke = false;
         boolean jednakiIntervali = false;
         return jednakiIntervali;
     }
-    @Override
-    public String toString()
+    public String toString() {
+        if (isNull()) {
+            return "()";
+        } else {
+            if (pocetnaPripadaIntervalu == false) {
+                String ispis = "(" + pocetnaTacka + "," + krajnjaTacka;
+                if (krajnjaPripadaIntervalu) {
+                    ispis = ispis + "]";
+                } else {
+                    ispis = ispis + ")";
+                }
+                return ispis;
+            } else {
+                String ispis = "[" + pocetnaTacka + "," + krajnjaTacka;
+                if (krajnjaPripadaIntervalu) {
+                    ispis = ispis + "]";
+                } else {
+                    ispis = ispis + ")";
+                }
+                return ispis;
+            }
+        }
     }
 }
